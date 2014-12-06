@@ -1,4 +1,4 @@
 storm-metrics-graphite
 ======================
 
-A Storm metrics reporter module for Graphite, loosely based on [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/).
+An adaptation of Storm metrics to Yammer metrics API, inspired by [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/).
