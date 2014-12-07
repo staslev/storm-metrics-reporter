@@ -26,7 +26,7 @@ Add a pom dependency:
 Configure your topology:
 
 1.  Specify `MetricReporter` as the metric consumer.
-2.  `YOUR_GRAPHITE_SERVER` and `YOUR_GRAPHITE_PORT` values. 
+2.  Specify `YOUR_GRAPHITE_SERVER` and `YOUR_GRAPHITE_PORT` values. 
 3.  Specify the metrics you want to report by providing an appropriate regular expression, in the example below we're reporting any metric that has the words "execute", "latency" or "capacity".
 4.  Specify your `StormMetricGauge` implementation, in the example we're using the provided `SimpleGraphiteStormMetricGauge` class.
 
