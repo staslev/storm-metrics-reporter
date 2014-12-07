@@ -40,9 +40,9 @@ config.registerMetricsConsumer(MetricReporter.class,
 Screenshots
 -----------
 
-![1](https://raw.githubusercontent.com/staslev/storm-metrics-reporter/master/screenshots/graphite-metrics-hierarchy.png)
+![Graphite metric hierarchy](https://raw.githubusercontent.com/staslev/storm-metrics-reporter/master/screenshots/graphite-metrics-hierarchy.png)
 
-![2](https://raw.githubusercontent.com/staslev/storm-metrics-reporter/master/screenshots/graphite-capacity-metrics.png)
+![Execute Latency Metrics](https://raw.githubusercontent.com/staslev/storm-metrics-reporter/master/screenshots/graphite-capacity-metrics.png)
 
 Disclaimers
 -----------
