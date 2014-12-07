@@ -51,4 +51,4 @@ Disclaimers
 -----------
 * This project was inspired by [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/), thanks [jt6211](https://github.com/jt6211)!
 * The screenshots above were generated using a custom `StormMetricGauge`, not the one included in the sources. It depicts a particular Graphite naming convention (the host for instance, is not seen in the metric hierarchy chart as it's located higher in the hierarchy). Metrics naming styles are subject to change in other environemnts.
-* storm-metrics-reporter currently supports reporting metrics to Graphite only, but it should be pretty straight forward to extend it to support other metrics reporting mechanisms.
+* storm-metrics-reporter **currently** supports reporting metrics to Graphite only, but it should be pretty straight forward to extend it to support other metrics reporting mechanisms.
