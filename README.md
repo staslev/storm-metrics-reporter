@@ -1,15 +1,16 @@
 A pretty generic Storm metrics reporter, currently used to adapt Storm metrics to Yammer metrics API, inspired by [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/).
 
-Building it
------------
+
+Usage
+--------
+
+Build the jar:
+
 ```bash 
 git clone https://github.com/staslev/storm-metrics-reporter.git
 cd storm-metrics-reporter
 mvn package install
 ```
-
-Using it
---------
 Add a pom dependency:
 
 ```xml
