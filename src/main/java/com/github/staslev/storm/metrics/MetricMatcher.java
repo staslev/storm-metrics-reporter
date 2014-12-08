@@ -18,7 +18,7 @@ public class MetricMatcher implements Predicate<Metric> {
 
   private boolean match(final Metric metric) {
     return compile
-            .matcher(metric.getComponent() + "." + metric.getOperation())
+            .matcher(metric.getMetricName())
             .matches();
   }
 

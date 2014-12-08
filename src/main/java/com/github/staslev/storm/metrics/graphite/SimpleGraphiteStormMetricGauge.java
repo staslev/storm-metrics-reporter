@@ -2,7 +2,6 @@ package com.github.staslev.storm.metrics.graphite;
 
 import backtype.storm.metric.api.IMetricsConsumer;
 import com.github.staslev.storm.metrics.Metric;
-import com.github.staslev.storm.metrics.MetricNameJoiner;
 import com.github.staslev.storm.metrics.StormMetricGauge;
 import com.yammer.metrics.core.Gauge;
 import com.yammer.metrics.core.MetricName;
@@ -41,7 +40,7 @@ public class SimpleGraphiteStormMetricGauge extends StormMetricGauge {
     try {
       graphiteReporter = new GraphiteReporter(getMetricsServerHost(),
                                               getMetricsServerPort(),
-                                              MetricNameJoiner.join("Storm", getTopologyName()));
+                                              Metric.joinNameFragments("Storm", getTopologyName()));
     } catch (final Exception e) {
       throw new RuntimeException(e);
     }
@@ -50,9 +49,9 @@ public class SimpleGraphiteStormMetricGauge extends StormMetricGauge {
   @Override
   public void report(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
 
-    final MetricName metricName = new MetricName(MetricNameJoiner.join(taskInfo.srcWorkerHost,
-                                                                       taskInfo.srcWorkerPort,
-                                                                       metric.getComponent()),
+    final MetricName metricName = new MetricName(Metric.joinNameFragments(taskInfo.srcWorkerHost,
+                                                                          taskInfo.srcWorkerPort,
+                                                                          metric.getComponent()),
                                                  Integer.toString(taskInfo.srcTaskId),
                                                  metric.getOperation());
 
