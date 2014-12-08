@@ -3,26 +3,27 @@ storm-metrics-reporter
 
 A pretty generic Storm metrics reporter, currently used to adapt Storm metrics to Yammer metrics API and report them to Graphite, inspired by [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/).
 
-
 Usage
 --------
 
-Build the jar:
+Add a pom dependency (hosted by maven central):
+
+```xml
+<dependency>
+  <groupId>com.github.staslev</groupId>
+  <artifactId>storm-metrics-reporter</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
+Or, in case you wish to build the jar yourself:
 
 ```bash 
 git clone https://github.com/staslev/storm-metrics-reporter.git
 cd storm-metrics-reporter
 mvn package install
 ```
-Add a pom dependency:
 
-```xml
-<dependency>
-  <groupId>com.github.staslev</groupId>
-  <artifactId>storm-metrics-reporter</artifactId>
-  <version>1.0-SNAPSHOT</version>
-</dependency>
-```
 Configure your topology:
 
 1.  Specify `MetricReporter` as the metric consumer.
