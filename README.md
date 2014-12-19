@@ -3,6 +3,16 @@ storm-metrics-reporter
 
 A pretty generic Storm metrics reporter, currently used to adapt Storm metrics to Yammer metrics API and report them to Graphite, inspired by [storm-metrics-statsd](https://github.com/endgameinc/storm-metrics-statsd/).
 
+Currently it provides the following core features:
+* Sending built-in Storm metrics to Graphite 
+* Bolt capacity metrics (not one of Storm's built-in metrics, and a bit of a pain to calculate using Graphite's mathematical functions)
+* Yammer metrics semantics over Storms metric mechanism
+  * Counter
+  * Gauge
+  * Timer
+  * Histogram
+  * Meter
+
 **Please take a look at the [Wiki](https://github.com/staslev/storm-metrics-reporter/wiki) for furter deatils.**
 
 Usage
