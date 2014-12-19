@@ -1,4 +1,4 @@
-package com.github.staslev.storm.metrics.graphite;
+package com.github.staslev.storm.metrics.yammer;
 
 import backtype.storm.metric.api.IMetricsConsumer;
 import com.github.staslev.storm.metrics.Metric;

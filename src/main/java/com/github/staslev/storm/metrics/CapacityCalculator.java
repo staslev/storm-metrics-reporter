@@ -34,18 +34,14 @@ public class CapacityCalculator {
     }
   };
 
-  private static String getMetricOperationAfterString(Metric metric, String after) {
-    return metric.getOperation().substring(metric.getOperation().indexOf(after) + after.length() + 1);
-  }
-
   private static Optional<Metric> calculateCapacityMetric(final String component,
                                                           final Optional<Metric> count,
                                                           final Optional<Metric> latency,
                                                           final int updateIntervalSecs) {
     if (count.isPresent() && latency.isPresent()) {
 
-      final String executeOperation = getMetricOperationAfterString(count.get(), EXECUTE_COUNT);
-      final String latencyOperation = getMetricOperationAfterString(latency.get(), EXECUTE_LATENCY);
+      final String executeOperation = count.get().getOperationAfterString(EXECUTE_COUNT);
+      final String latencyOperation = latency.get().getOperationAfterString(EXECUTE_LATENCY);
 
       if (executeOperation.equals(latencyOperation)) {
         double capacity =

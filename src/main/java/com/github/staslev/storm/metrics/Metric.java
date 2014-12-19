@@ -26,6 +26,7 @@ public class Metric {
                 return metricOption.get();
               }
             };
+
   }
 
   public static final String NAME_FRAGMENT_SEPARATOR = ".";
@@ -38,6 +39,19 @@ public class Metric {
     this.component = component;
     this.operation = operation;
     this.value = value;
+  }
+
+  /**
+   * Returns the operation portion of the metric after a given string literal.
+   *
+   * @param after the string literal to skip.
+   * @return the operation portion of the metric after a given string literal. If the provided string literal is not
+   * present in the operation string, the operation string is returned as is.
+   */
+  public String getOperationAfterString(String after) {
+    return !getOperation().contains(after) ?
+           getOperation() :
+           getOperation().substring(getOperation().indexOf(after) + after.length() + 1);
   }
 
   /**
@@ -59,7 +73,6 @@ public class Metric {
   public static String cleanNameFragment(final String metricNameFragment) {
     return metricNameFragment
             .replace("__", "")
-            .replace('.', '_')
             .replace('/', '.')
             .replace(':', '_');
   }

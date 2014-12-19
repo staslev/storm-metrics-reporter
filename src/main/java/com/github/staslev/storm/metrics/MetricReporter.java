@@ -4,10 +4,7 @@ import backtype.storm.Config;
 import backtype.storm.metric.api.IMetricsConsumer;
 import backtype.storm.task.IErrorReporter;
 import backtype.storm.task.TopologyContext;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -47,28 +44,36 @@ public class MetricReporter implements IMetricsConsumer {
         component2metrics.put(component, new LinkedList<Metric>());
       }
 
-      if (dataPoint.value instanceof Number) {
-        component2metrics.get(component).add(new Metric(component,
-                                                        Metric.cleanNameFragment(dataPoint.name),
-                                                        value(dataPoint.value)));
-      } else if (dataPoint.value instanceof Map) {
-        @SuppressWarnings("rawtypes")
-        final Map map = (Map) dataPoint.value;
-        for (final Object subName : map.keySet()) {
-          final Object subValue = map.get(subName);
-          if (subValue instanceof Number) {
-            component2metrics
-                    .get(component)
-                    .add(new Metric(component,
-                                    Metric.joinNameFragments(Metric.cleanNameFragment(dataPoint.name),
-                                                             Metric.cleanNameFragment(subName.toString())),
-                                    value(subValue)));
-          }
+      component2metrics.get(component).addAll(extractMetrics(dataPoint, component));
+    }
+
+    return component2metrics;
+  }
+
+  private List<Metric> extractMetrics(final DataPoint dataPoint, final String component) {
+
+    List<Metric> metrics = Lists.newArrayList();
+
+    if (dataPoint.value instanceof Number) {
+      metrics.add(new Metric(component, Metric.cleanNameFragment(dataPoint.name), value(dataPoint.value)));
+    } else if (dataPoint.value instanceof Map) {
+      @SuppressWarnings("rawtypes")
+      final Map map = (Map) dataPoint.value;
+      for (final Object subName : map.keySet()) {
+        final Object subValue = map.get(subName);
+        if (subValue instanceof Number) {
+          metrics.add(new Metric(component,
+                                 Metric.joinNameFragments(Metric.cleanNameFragment(dataPoint.name),
+                                                          Metric.cleanNameFragment(subName.toString())),
+                                 value(subValue)));
+        } else if (subValue instanceof Map) {
+          metrics.addAll(extractMetrics(new DataPoint(Metric.joinNameFragments(dataPoint.name, subName), subValue),
+                                        component));
         }
       }
     }
 
-    return component2metrics;
+    return metrics;
   }
 
   @Override
@@ -77,6 +82,7 @@ public class MetricReporter implements IMetricsConsumer {
                       final TopologyContext context,
                       final IErrorReporter errorReporter) {
 
+    @SuppressWarnings("unchecked")
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
     stormMetricGauge = config.getStormMetricGauge((String) stormConf.get(Config.TOPOLOGY_NAME),
