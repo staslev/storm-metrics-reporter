@@ -4,6 +4,7 @@ import backtype.storm.metric.api.IMetricsConsumer;
 
 /**
  * Responsible for reporting a metric value (in the form of a gauge) to some metric system.
+ * <br/><br/>
  * NOTE: The implementing gauge reporter must take into account that the reporting granularity is taskId,
  * that is, it should make sure it does not overwrite values by aggregating incoming value incorrectly (for instance,
  * aggregating per workerHost-port-componentId is wrong, since the various tasks might overwrite each other's values.
