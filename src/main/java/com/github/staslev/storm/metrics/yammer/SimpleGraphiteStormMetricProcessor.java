@@ -2,7 +2,7 @@ package com.github.staslev.storm.metrics.yammer;
 
 import backtype.storm.metric.api.IMetricsConsumer;
 import com.github.staslev.storm.metrics.Metric;
-import com.github.staslev.storm.metrics.StormMetricGauge;
+import com.github.staslev.storm.metrics.StormMetricProcessor;
 import com.yammer.metrics.core.Gauge;
 import com.yammer.metrics.core.MetricName;
 import com.yammer.metrics.reporting.GraphiteReporter;
@@ -27,15 +27,15 @@ import org.slf4j.LoggerFactory;
  * <br/>Client might want to implement a custom StormMetricGauge in order to employ the metric naming convention
  * that fits them best. This implementation is more of a showcase.
  */
-public class SimpleGraphiteStormMetricGauge extends StormMetricGauge {
+public class SimpleGraphiteStormMetricProcessor extends StormMetricProcessor {
 
-  public static final Logger LOG = LoggerFactory.getLogger(SimpleGraphiteStormMetricGauge.class);
+  public static final Logger LOG = LoggerFactory.getLogger(SimpleGraphiteStormMetricProcessor.class);
 
   private final GraphiteReporter graphiteReporter;
 
-  public SimpleGraphiteStormMetricGauge(final String topologyName,
-                                        final String graphiteHost,
-                                        final Integer graphitePort) {
+  public SimpleGraphiteStormMetricProcessor(final String topologyName,
+                                            final String graphiteHost,
+                                            final Integer graphitePort) {
     super(topologyName, graphiteHost, graphitePort);
     try {
       graphiteReporter = new GraphiteReporter(getMetricsServerHost(),
@@ -47,7 +47,7 @@ public class SimpleGraphiteStormMetricGauge extends StormMetricGauge {
   }
 
   @Override
-  public void report(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
+  public void process(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
 
     final MetricName metricName = new MetricName(Metric.joinNameFragments(taskInfo.srcWorkerHost,
                                                                           taskInfo.srcWorkerPort,

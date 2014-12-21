@@ -26,7 +26,7 @@ public class MetricReporter implements IMetricsConsumer {
   public static final String METRICS_PORT = "metric.reporter.port";
 
   private MetricMatcher allowedMetrics;
-  private StormMetricGauge stormMetricGauge;
+  private StormMetricProcessor stormMetricProcessor;
 
   private double value(final Object value) {
     return ((Number) value).doubleValue();
@@ -85,7 +85,7 @@ public class MetricReporter implements IMetricsConsumer {
     @SuppressWarnings("unchecked")
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
-    stormMetricGauge = config.getStormMetricGauge((String) stormConf.get(Config.TOPOLOGY_NAME),
+    stormMetricProcessor = config.getStormMetricGauge((String) stormConf.get(Config.TOPOLOGY_NAME),
                                                   (String) stormConf.get(METRICS_HOST),
                                                   Integer.parseInt(stormConf.get(METRICS_PORT).toString()));
 
@@ -101,7 +101,7 @@ public class MetricReporter implements IMetricsConsumer {
     final Iterable<Metric> allMetrics = Iterables.concat(providedMetrics, capacityMetrics);
 
     for (final Metric metric : FluentIterable.from(allMetrics).filter(allowedMetrics).toList()) {
-      stormMetricGauge.report(metric, taskInfo);
+      stormMetricProcessor.process(metric, taskInfo);
     }
   }
 
