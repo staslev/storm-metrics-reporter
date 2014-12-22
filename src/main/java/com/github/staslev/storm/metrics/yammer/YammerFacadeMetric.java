@@ -17,6 +17,12 @@ public class YammerFacadeMetric implements IMetric {
 
   private static class MetricSerializer implements MetricProcessor<Map> {
 
+    private String toString(final MetricName metricName) {
+      return com.github.staslev.storm.metrics.Metric.joinNameFragments(metricName.getGroup(),
+                                                                       metricName.getType(),
+                                                                       metricName.getName());
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void processMeter(final MetricName name, final Metered meter, final Map context) throws Exception {
@@ -31,18 +37,20 @@ public class YammerFacadeMetric implements IMetric {
                       .put("15MinuteRate", meter.fifteenMinuteRate())
                       .build();
 
-      context.put(name.getName(), subMetrics);
+      context.put(toString(name), subMetrics);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void processCounter(final MetricName name, final Counter counter, final Map context) throws Exception {
-      context.put(name.getName(), counter.count());
+      context.put(toString(name), counter.count());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void processHistogram(final MetricName name, final Histogram histogram, final Map context) throws Exception {
+    public void processHistogram(final MetricName metricName,
+                                 final Histogram histogram,
+                                 final Map context) throws Exception {
 
       final Snapshot snapshot = histogram.getSnapshot();
 
@@ -60,7 +68,7 @@ public class YammerFacadeMetric implements IMetric {
                       .build();
 
 
-      context.put(name.getName(), subMetrics);
+      context.put(toString(metricName), subMetrics);
     }
 
     @SuppressWarnings("unchecked")
@@ -79,7 +87,7 @@ public class YammerFacadeMetric implements IMetric {
                       .put("99percentile", snapshot.get99thPercentile())
                       .build();
 
-      context.put(name.getName(), subMetrics);
+      context.put(toString(name), subMetrics);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,7 +95,7 @@ public class YammerFacadeMetric implements IMetric {
     public void processGauge(final MetricName name,
                              final com.yammer.metrics.core.Gauge<?> gauge,
                              final Map context) throws Exception {
-      context.put(name.getName(), gauge.value());
+      context.put(toString(name), gauge.value());
     }
   }
 
@@ -106,11 +114,11 @@ public class YammerFacadeMetric implements IMetric {
    * <br/><br/>
    * Note: <code>configure</code> should NOT be called more than once in the scope of a given
    * Storm component (bolt/spout).
-   *
+   * <p/>
    * Multiple registrations might cause metric duplications and problems in the reporting flow.
    *
-   * @param stormConf Storm configuration settings.
-   * @param context TopologyContext for the topology a face metric is to be reporting metrics for.
+   * @param stormConf       Storm configuration settings.
+   * @param context         TopologyContext for the topology a face metric is to be reporting metrics for.
    * @param metricsRegistry A metric registry instance where underlying metrics are to be stored.
    */
   public static void register(final Map stormConf,
@@ -124,6 +132,7 @@ public class YammerFacadeMetric implements IMetric {
 
   /**
    * Returns a Map representing all the Yammer metrics managed by this facade metric.
+   *
    * @return A Map which is in fact a snapshot of all the Yammer metrics managed by this facade metric.
    */
   @Override

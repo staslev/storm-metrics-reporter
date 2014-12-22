@@ -4,6 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
 
@@ -28,6 +31,13 @@ public class Metric {
             };
 
   }
+
+  private static Predicate<Object> nonBlank = new Predicate<Object>() {
+    @Override
+    public boolean apply(final Object name) {
+      return StringUtils.isNotBlank(name.toString());
+    }
+  };
 
   public static final String NAME_FRAGMENT_SEPARATOR = ".";
 
@@ -61,7 +71,12 @@ public class Metric {
    * @return A joined metric name string.
    */
   public static String joinNameFragments(Object... metricNameFragments) {
-    return Joiner.on(NAME_FRAGMENT_SEPARATOR).join(Arrays.asList(metricNameFragments));
+
+    final ImmutableList<Object> nonBlankNameFragments = FluentIterable.from(Arrays.asList(metricNameFragments))
+                                                                      .filter(nonBlank)
+                                                                      .toList();
+
+    return Joiner.on(NAME_FRAGMENT_SEPARATOR).join(nonBlankNameFragments);
   }
 
   /**
