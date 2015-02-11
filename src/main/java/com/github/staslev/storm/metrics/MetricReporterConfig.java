@@ -35,9 +35,9 @@ public class MetricReporterConfig extends ArrayList<String> {
    * @param topologyName The name of the topology the newly created gauge will be reporting metrics for.
    * @return A new GaugeReporter instance of the specified class.
    */
-  public StormMetricProcessor getStormMetricGauge(final String topologyName,
-                                              final String metricsServerHost,
-                                              final int metricsServerPort) {
+  public StormMetricProcessor getStormMetricProcessor(final String topologyName,
+                                                      final String metricsServerHost,
+                                                      final int metricsServerPort) {
     try {
       final Constructor<?> constructor = Class.forName(getStormMetricGaugeClassName()).getConstructor(String.class,
                                                                                                       String.class,
