@@ -27,16 +27,16 @@ public class StormYammerMetricsAdapter {
   }
 
   /**
-   * Constructs a <code>StormYammerMetricsAdapter</code> instance.
+   * Constructs a {@link StormYammerMetricsAdapter} instance.
    * <br/><br/>
-   *
-   * Note: <code>configure</code> should NOT be called more than once in the scope of a given
+   * <p/>
+   * Note: {@link StormYammerMetricsAdapter#configure(Map, TopologyContext, MetricsRegistry)} should NOT be called more than once in the scope of a given
    * Storm component (bolt/spout).
    *
-   * @param stormConf Storm configuration settings.
-   * @param context TopologyContext for the topology a face metric is to be reporting metrics for.
+   * @param stormConf       Storm configuration settings.
+   * @param context         TopologyContext for the topology a face metric is to be reporting metrics for.
    * @param metricsRegistry A metric registry instance where underlying metrics are to be stored.
-   * @return A <code>StormYammerMetricsAdapter</code> instance.
+   * @return A {@link StormYammerMetricsAdapter} instance.
    */
   public static StormYammerMetricsAdapter configure(final Map stormConf,
                                                     final TopologyContext context,

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 /**
  * Matches a metric full name (component and operation) according to a specified regular expression.
- * Implements the <code>Predicate</code> interface in order to be compliant with Guava.
+ * Implements the {@link Predicate} interface in order to be compliant with Guava.
  */
 public class MetricMatcher implements Predicate<Metric> {
 

@@ -110,10 +110,9 @@ public class YammerFacadeMetric implements IMetric {
 
   /**
    * Registers a facade metric with a given topology (represented by a {@link backtype.storm.task.TopologyContext}).
-   * with a <code>TopologyContext</code>.
+   * with a {@link TopologyContext}.
    * <br/><br/>
-   * Note: <code>configure</code> should NOT be called more than once in the scope of a given
-   * Storm component (bolt/spout).
+
    * <p/>
    * Multiple registrations might cause metric duplications and problems in the reporting flow.
    *

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A straight forward <code>GaugeReporter</code> implementation that reports values according to the following
+ * A straight forward {@link StormMetricProcessor} implementation that reports values according to the following
  * metric hierarchy:
  * <pre>
  *   -Storm
