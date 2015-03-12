@@ -1,8 +1,11 @@
 package com.github.staslev.storm.metrics;
 
+import backtype.storm.Config;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Holds configuration options for the {@link StormMetricProcessor} metric consumer.
@@ -11,10 +14,10 @@ import java.util.List;
  */
 public class MetricReporterConfig extends ArrayList<String> {
 
-  public MetricReporterConfig(final String allowedMetricNames, final String stormMetricGaugeClassName) {
+  public MetricReporterConfig(final String allowedMetricNames, final String stormMetricProcessorClassName) {
     super(2);
     add(allowedMetricNames);
-    add(stormMetricGaugeClassName);
+    add(stormMetricProcessorClassName);
   }
 
   public static MetricReporterConfig from(final List<String> params) {
@@ -32,17 +35,23 @@ public class MetricReporterConfig extends ArrayList<String> {
   /**
    * Creates an instance of the configured {@link StormMetricProcessor} class.
    *
-   * @param topologyName The name of the topology the newly created gauge will be reporting metrics for.
+   * @param stormConf configuration parameters
    * @return A new GaugeReporter instance of the specified class.
    */
-  public StormMetricProcessor getStormMetricProcessor(final String topologyName,
-                                                      final String metricsServerHost,
-                                                      final int metricsServerPort) {
+  public StormMetricProcessor getStormMetricProcessor(final Map stormConf) {
     try {
+      final int metricsServerPort = Integer.parseInt(stormConf.get(MetricReporter.METRICS_PORT).toString());
+      final String metricsServerHost = (String) stormConf.get(MetricReporter.METRICS_HOST);
+      final String topologyName = (String) stormConf.get(Config.TOPOLOGY_NAME);
+
       final Constructor<?> constructor = Class.forName(getStormMetricProcessorClassName()).getConstructor(String.class,
-                                                                                                      String.class,
-                                                                                                      Integer.class);
-      return (StormMetricProcessor) constructor.newInstance(topologyName, metricsServerHost, metricsServerPort);
+                                                                                                          String.class,
+                                                                                                          Integer.class,
+                                                                                                          Map.class);
+      return (StormMetricProcessor) constructor.newInstance(topologyName,
+                                                            metricsServerHost,
+                                                            metricsServerPort,
+                                                            stormConf);
     } catch (final Exception e) {
       throw new RuntimeException(e);
     }

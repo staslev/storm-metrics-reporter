@@ -1,6 +1,5 @@
 package com.github.staslev.storm.metrics;
 
-import backtype.storm.Config;
 import backtype.storm.metric.api.IMetricsConsumer;
 import backtype.storm.task.IErrorReporter;
 import backtype.storm.task.TopologyContext;
@@ -85,9 +84,7 @@ public class MetricReporter implements IMetricsConsumer {
     @SuppressWarnings("unchecked")
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
-    stormMetricProcessor = config.getStormMetricProcessor((String) stormConf.get(Config.TOPOLOGY_NAME),
-                                                          (String) stormConf.get(METRICS_HOST),
-                                                          Integer.parseInt(stormConf.get(METRICS_PORT).toString()));
+    stormMetricProcessor = config.getStormMetricProcessor(stormConf);
 
   }
 
