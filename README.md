@@ -24,7 +24,7 @@ Add a pom dependency (hosted by maven central):
 <dependency>
   <groupId>com.github.staslev</groupId>
   <artifactId>storm-metrics-reporter</artifactId>
-  <version>1.2</version>
+  <version>1.4.1</version>
 </dependency>
 ```
 
