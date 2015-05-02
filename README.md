@@ -23,7 +23,7 @@ Or, in case you wish to build the jar yourself:
 ```bash 
 git clone https://github.com/staslev/storm-metrics-reporter.git
 cd storm-metrics-reporter
-mvn package install
+mvn install
 ```
 
 Screenshots
