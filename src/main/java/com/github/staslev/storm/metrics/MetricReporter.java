@@ -1,5 +1,6 @@
 package com.github.staslev.storm.metrics;
 
+import backtype.storm.Config;
 import backtype.storm.metric.api.IMetricsConsumer;
 import backtype.storm.task.IErrorReporter;
 import backtype.storm.task.TopologyContext;
@@ -21,9 +22,7 @@ import java.util.Map;
  */
 public class MetricReporter implements IMetricsConsumer {
 
-  public static final String METRICS_HOST = "metric.reporter.host";
-  public static final String METRICS_PORT = "metric.reporter.port";
-
+  private String topology;
   private MetricMatcher allowedMetrics;
   private StormMetricProcessor stormMetricProcessor;
 
@@ -85,7 +84,7 @@ public class MetricReporter implements IMetricsConsumer {
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
     stormMetricProcessor = config.getStormMetricProcessor(stormConf);
-
+    topology = (String) stormConf.get(Config.TOPOLOGY_NAME);
   }
 
   @Override
@@ -98,7 +97,7 @@ public class MetricReporter implements IMetricsConsumer {
     final Iterable<Metric> allMetrics = Iterables.concat(providedMetrics, capacityMetrics);
 
     for (final Metric metric : FluentIterable.from(allMetrics).filter(allowedMetrics).toList()) {
-      stormMetricProcessor.process(metric, taskInfo);
+      stormMetricProcessor.process(topology, metric, taskInfo);
     }
   }
 

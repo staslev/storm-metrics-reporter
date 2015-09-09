@@ -1,9 +1,7 @@
 package com.github.staslev.storm.metrics.yammer;
 
 import backtype.storm.Config;
-import com.github.staslev.storm.metrics.MetricReporter;
 import com.github.staslev.storm.metrics.MetricReporterConfig;
-import com.github.staslev.storm.metrics.StormMetricProcessor;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -25,22 +23,21 @@ public class SimpleGraphiteStormMetricProcessorTest {
 
     Map config = new HashMap();
     config.put(YammerFacadeMetric.FACADE_METRIC_TIME_BUCKET_IN_SEC, 60);
-    config.put(MetricReporter.METRICS_HOST, host);
-    config.put(MetricReporter.METRICS_PORT, port);
+    config.put(SimpleGraphiteStormMetricProcessor.GRAPHITE_HOST, host);
+    config.put(SimpleGraphiteStormMetricProcessor.GRAPHITE_PORT, port);
     config.put(SimpleGraphiteStormMetricProcessor.REPORT_PERIOD_IN_SEC, reportPeriod);
     config.put(Config.TOPOLOGY_NAME, topologyName);
 
-    final StormMetricProcessor stormMetricProcessor =
-            new MetricReporterConfig(".*",
-                                     SimpleGraphiteStormMetricProcessor.class.getCanonicalName())
-                    .getStormMetricProcessor(config);
 
-    assertThat(stormMetricProcessor.getMetricsServerHost(), is(host));
-    assertThat(stormMetricProcessor.getMetricsServerPort(), is(port));
-    assertThat(stormMetricProcessor.getTopologyName(), is(topologyName));
-    assertThat(stormMetricProcessor.getConfig(), is(config));
+    MetricReporterConfig metricReporterConfig =
+            new MetricReporterConfig(".*", SimpleGraphiteStormMetricProcessor.class.getCanonicalName());
+    final SimpleGraphiteStormMetricProcessor stormMetricProcessor =
+            (SimpleGraphiteStormMetricProcessor)metricReporterConfig.getStormMetricProcessor(config);
+
+    assertThat(stormMetricProcessor.getGraphiteServerHost(config), is(host));
+    assertThat(stormMetricProcessor.getGraphiteServerPort(config), is(port));
+    assertThat(stormMetricProcessor.topologyName, is(topologyName));
+    assertThat(stormMetricProcessor.config, is(config));
 
   }
-
-
 }
