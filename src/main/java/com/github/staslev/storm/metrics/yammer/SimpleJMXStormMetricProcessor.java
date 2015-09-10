@@ -8,6 +8,7 @@ import com.yammer.metrics.reporting.JmxReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.ObjectName;
 import java.util.Map;
 
 public class SimpleJMXStormMetricProcessor extends SimpleStormMetricProcessor {
@@ -25,7 +26,7 @@ public class SimpleJMXStormMetricProcessor extends SimpleStormMetricProcessor {
         return "storm"
                 + ":topology=" + topology
                 + ",component=" + metric.getComponent()
-                + ",operation=" + metric.getOperation()
+                + ",operation=" + ObjectName.quote(metric.getOperation())
                 + ",host-port-task=" + String.format("%s-%s-%s", taskInfo.srcWorkerHost
                     ,taskInfo.srcWorkerPort
                     ,taskInfo.srcTaskId);

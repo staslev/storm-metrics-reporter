@@ -19,13 +19,13 @@ public class SimpleJMXStormMetricProcessorTest {
 
     processor = new SimpleJMXStormMetricProcessor("testTopology", Maps.newHashMap());
 
-    Metric metric = new Metric("component", "op", 1.9);
+    Metric metric = new Metric("component", "kafkaPartition{host=kafka_9092, partition=0}", 1.9);
     IMetricsConsumer.TaskInfo taskInfo = new IMetricsConsumer.TaskInfo("localhost", 1010, "emitBot", 2, System.currentTimeMillis(), 100);
 
     String name = processor.mBeanName("testTopology", metric, taskInfo);
     ObjectName objName = new ObjectName(name);
 
-    assertThat(objName.getCanonicalName(), is("storm:component=component,host-port-task=localhost-1010-2,operation=op,topology=testTopology"));
+    assertThat(objName.getCanonicalName(), is("storm:component=component,host-port-task=localhost-1010-2,operation=\"kafkaPartition{host=kafka_9092, partition=0}\",topology=testTopology"));
   }
 
 
