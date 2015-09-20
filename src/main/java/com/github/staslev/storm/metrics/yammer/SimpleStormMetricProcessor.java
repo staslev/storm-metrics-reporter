@@ -42,7 +42,7 @@ public class SimpleStormMetricProcessor implements StormMetricProcessor {
 
     private SettableGauge<Double> createOrUpdateGauge(final Metric metric, final MetricName metricName) {
         final SettableGauge<Double> settableGauge =
-                (SettableGauge<Double>) METRICS_REGISTRY.newGauge(metricName, new SettableGauge<>(metric.getValue()));
+                (SettableGauge<Double>) METRICS_REGISTRY.newGauge(metricName, new SettableGauge(metric.getValue()));
         settableGauge.setValue(metric.getValue());
         return settableGauge;
     }
