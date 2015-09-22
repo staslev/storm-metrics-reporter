@@ -1,9 +1,9 @@
 storm-metrics-reporter
 ======================
 
-A Storm metrics reporter capable of sending both Storm built-in metrics, as well as custom ones, to Graphite.
+A Storm metrics reporter capable of sending both Storm built-in metrics, as well as custom ones, to various metrics reporters such as Graphite or plain JMX.
 
-**Please take a look at the [Wiki](https://github.com/staslev/storm-metrics-reporter/wiki) for furter deatils.**
+**Please take a look at the [Wiki](https://github.com/staslev/storm-metrics-reporter/wiki) for further details.**
 
 Usage
 --------

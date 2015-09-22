@@ -1,5 +1,6 @@
 package com.github.staslev.storm.metrics;
 
+import backtype.storm.Config;
 import backtype.storm.metric.api.IMetricsConsumer;
 import backtype.storm.task.IErrorReporter;
 import backtype.storm.task.TopologyContext;
@@ -20,9 +21,6 @@ import java.util.Map;
  * <br/><br/><url>Inspired by <url>https://github.com/endgameinc/storm-metrics-statsd</url>
  */
 public class MetricReporter implements IMetricsConsumer {
-
-  public static final String METRICS_HOST = "metric.reporter.host";
-  public static final String METRICS_PORT = "metric.reporter.port";
 
   private MetricMatcher allowedMetrics;
   private StormMetricProcessor stormMetricProcessor;
@@ -85,7 +83,6 @@ public class MetricReporter implements IMetricsConsumer {
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
     stormMetricProcessor = config.getStormMetricProcessor(stormConf);
-
   }
 
   @Override
