@@ -40,12 +40,8 @@ public class MetricReporterConfig extends ArrayList<String> {
    */
   public StormMetricProcessor getStormMetricProcessor(final Map stormConf) {
     try {
-      final String topologyName = (String) stormConf.get(Config.TOPOLOGY_NAME);
-
-      final Constructor<?> constructor = Class.forName(getStormMetricProcessorClassName()).getConstructor(String.class,
-                                                                                                          Map.class);
-      return (StormMetricProcessor) constructor.newInstance(topologyName,
-                                                            stormConf);
+      final Constructor<?> constructor = Class.forName(getStormMetricProcessorClassName()).getConstructor(Map.class);
+      return (StormMetricProcessor) constructor.newInstance(stormConf);
     } catch (final Exception e) {
       throw new RuntimeException(e);
     }

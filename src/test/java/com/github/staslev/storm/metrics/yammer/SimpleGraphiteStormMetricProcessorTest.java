@@ -34,8 +34,8 @@ public class SimpleGraphiteStormMetricProcessorTest {
     final SimpleGraphiteStormMetricProcessor stormMetricProcessor =
             (SimpleGraphiteStormMetricProcessor)metricReporterConfig.getStormMetricProcessor(config);
 
-    assertThat(stormMetricProcessor.getGraphiteServerHost(config), is(host));
-    assertThat(stormMetricProcessor.getGraphiteServerPort(config), is(port));
+    assertThat(stormMetricProcessor.getGraphiteServerHost(), is(host));
+    assertThat(stormMetricProcessor.getGraphiteServerPort(), is(port));
     assertThat(stormMetricProcessor.topologyName, is(topologyName));
     assertThat(stormMetricProcessor.config, is(config));
 

@@ -21,35 +21,34 @@ public class SimpleGraphiteStormMetricProcessor extends SimpleStormMetricProcess
     @SuppressWarnings("FieldCanBeLocal")
     private final GraphiteReporter graphiteReporter;
 
-    public SimpleGraphiteStormMetricProcessor(final String topologyName,
-                                              final Map config) {
-        super(topologyName, config);
+    public SimpleGraphiteStormMetricProcessor(final Map config) {
+        super(config);
 
         try {
             graphiteReporter = new GraphiteReporter(StormMetricProcessor.METRICS_REGISTRY,
-                    getGraphiteServerHost(config),
-                    getGraphiteServerPort(config),
+                    getGraphiteServerHost(),
+                    getGraphiteServerPort(),
                     Metric.joinNameFragments("Storm", topologyName));
 
-            graphiteReporter.start(getGraphiteReportPeriod(config), TimeUnit.SECONDS);
+            graphiteReporter.start(getGraphiteReportPeriod(), TimeUnit.SECONDS);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    String getGraphiteServerHost(final Map config) {
+    String getGraphiteServerHost() {
         return config.containsKey(GRAPHITE_HOST) ?
                 config.get(GRAPHITE_HOST).toString() :
                 DEFAULT_GRAPHITE_HOST;
     }
 
-    int getGraphiteServerPort(final Map config) {
+    int getGraphiteServerPort() {
         return config.containsKey(GRAPHITE_PORT) ?
                 Integer.parseInt(config.get(GRAPHITE_PORT).toString()) :
                 DEFAULT_GRAPHITE_PORT;
     }
 
-    int getGraphiteReportPeriod(final Map config) {
+    int getGraphiteReportPeriod() {
         return config.containsKey(REPORT_PERIOD_IN_SEC) ?
                 Integer.parseInt(config.get(REPORT_PERIOD_IN_SEC).toString()) :
                 DEFAULT_REPORT_PERIOD_SEC;

@@ -1,5 +1,6 @@
 package com.github.staslev.storm.metrics.yammer;
 
+import backtype.storm.Config;
 import backtype.storm.metric.api.IMetricsConsumer;
 import com.github.staslev.storm.metrics.Metric;
 import com.github.staslev.storm.metrics.StormMetricProcessor;
@@ -31,13 +32,16 @@ public class SimpleStormMetricProcessor implements StormMetricProcessor {
 
     public static final Logger LOG = LoggerFactory.getLogger(SimpleStormMetricProcessor.class);
 
-    final String topologyName;
-    Map config;
+    private static final String DEFAULT_TOPOLOGY_NAME = "default";
 
-    public SimpleStormMetricProcessor(final String topologyName,
-                                      final Map config) {
-        this.topologyName = topologyName;
+    final protected String topologyName;
+    final protected Map config;
+
+    public SimpleStormMetricProcessor(final Map config) {
         this.config = config;
+        this.topologyName = config.containsKey(Config.TOPOLOGY_NAME) ?
+                        config.get(Config.TOPOLOGY_NAME).toString() :
+                        DEFAULT_TOPOLOGY_NAME;
     }
 
     private SettableGauge<Double> createOrUpdateGauge(final Metric metric, final MetricName metricName) {
@@ -48,7 +52,7 @@ public class SimpleStormMetricProcessor implements StormMetricProcessor {
     }
 
     @Override
-    public MetricName name(final String topology, final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
+    public MetricName name(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
         return new MetricName(Metric.joinNameFragments(taskInfo.srcWorkerHost,
                         taskInfo.srcWorkerPort,
                         metric.getComponent()),
@@ -57,9 +61,9 @@ public class SimpleStormMetricProcessor implements StormMetricProcessor {
     }
 
     @Override
-    public void process(final String topology, final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
+    public void process(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo) {
 
-        final MetricName metricName = name(topology, metric, taskInfo);
+        final MetricName metricName = name(metric, taskInfo);
         try {
             createOrUpdateGauge(metric, metricName);
         } catch (final Exception e) {

@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public class MetricReporter implements IMetricsConsumer {
 
-  private String topology;
   private MetricMatcher allowedMetrics;
   private StormMetricProcessor stormMetricProcessor;
 
@@ -84,7 +83,6 @@ public class MetricReporter implements IMetricsConsumer {
     final MetricReporterConfig config = MetricReporterConfig.from((List<String>) registrationArgument);
     allowedMetrics = new MetricMatcher(config.getAllowedMetricNames());
     stormMetricProcessor = config.getStormMetricProcessor(stormConf);
-    topology = (String) stormConf.get(Config.TOPOLOGY_NAME);
   }
 
   @Override
@@ -97,7 +95,7 @@ public class MetricReporter implements IMetricsConsumer {
     final Iterable<Metric> allMetrics = Iterables.concat(providedMetrics, capacityMetrics);
 
     for (final Metric metric : FluentIterable.from(allMetrics).filter(allowedMetrics).toList()) {
-      stormMetricProcessor.process(topology, metric, taskInfo);
+      stormMetricProcessor.process(metric, taskInfo);
     }
   }
 

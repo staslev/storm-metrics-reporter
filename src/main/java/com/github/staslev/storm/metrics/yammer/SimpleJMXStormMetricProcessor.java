@@ -15,16 +15,15 @@ public class SimpleJMXStormMetricProcessor extends SimpleStormMetricProcessor {
 
     public static final Logger LOG = LoggerFactory.getLogger(SimpleJMXStormMetricProcessor.class);
 
-    public SimpleJMXStormMetricProcessor(final String topologyName,
-                                         final Map config) {
-        super(topologyName, config);
+    public SimpleJMXStormMetricProcessor(final Map config) {
+        super(config);
         new JmxReporter(StormMetricProcessor.METRICS_REGISTRY).start();
         LOG.info("Metrics JMXReport started");
     }
 
-    String mBeanName(String topology, Metric metric, IMetricsConsumer.TaskInfo taskInfo) {
+    String mBeanName(Metric metric, IMetricsConsumer.TaskInfo taskInfo) {
         return "storm"
-                + ":topology=" + topology
+                + ":topology=" + topologyName
                 + ",component=" + metric.getComponent()
                 + ",operation=" + ObjectName.quote(metric.getOperation())
                 + ",host-port-task=" + String.format("%s-%s-%s", taskInfo.srcWorkerHost
@@ -33,11 +32,11 @@ public class SimpleJMXStormMetricProcessor extends SimpleStormMetricProcessor {
     }
 
     @Override
-    public MetricName name(String topology, Metric metric, IMetricsConsumer.TaskInfo taskInfo) {
+    public MetricName name(Metric metric, IMetricsConsumer.TaskInfo taskInfo) {
         return new MetricName("storm",
                 topologyName,
                 metric.getComponent(),
                 metric.getOperation(),
-                mBeanName(topology, metric, taskInfo));
+                mBeanName(metric, taskInfo));
     }
 }

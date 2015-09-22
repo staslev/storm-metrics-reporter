@@ -18,19 +18,17 @@ public interface StormMetricProcessor {
   /**
    * Returns the metric name for the storm metric produced by a task.
    *
-   * @param topology storm topology id
    * @param metric storm metric object
    * @param taskInfo information about the task that generates the metric
    * @return the name for the yammer metric
    */
-  MetricName name(final String topology, final Metric metric, final IMetricsConsumer.TaskInfo taskInfo);
+  MetricName name(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo);
 
   /**
    * Processes the storm metric
    *
-   * @param topology storm topology id
    * @param metric storm metric object
    * @param taskInfo information about the task that generates the metric
    */
-  void process(final String topology, final Metric metric, final IMetricsConsumer.TaskInfo taskInfo);
+  void process(final Metric metric, final IMetricsConsumer.TaskInfo taskInfo);
 }
