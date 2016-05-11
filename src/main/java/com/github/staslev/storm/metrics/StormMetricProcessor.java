@@ -1,8 +1,8 @@
 package com.github.staslev.storm.metrics;
 
-import backtype.storm.metric.api.IMetricsConsumer;
 import com.yammer.metrics.core.MetricName;
 import com.yammer.metrics.core.MetricsRegistry;
+import org.apache.storm.metric.api.IMetricsConsumer;
 
 /**
  * Responsible for processing a metric reported by Storm.

@@ -1,10 +1,17 @@
 package com.github.staslev.storm.metrics.yammer;
 
-import backtype.storm.metric.api.IMetric;
-import backtype.storm.task.TopologyContext;
 import com.google.common.collect.ImmutableMap;
-import com.yammer.metrics.core.*;
+import com.yammer.metrics.core.Counter;
+import com.yammer.metrics.core.Histogram;
+import com.yammer.metrics.core.Metered;
+import com.yammer.metrics.core.Metric;
+import com.yammer.metrics.core.MetricName;
+import com.yammer.metrics.core.MetricProcessor;
+import com.yammer.metrics.core.MetricsRegistry;
+import com.yammer.metrics.core.Timer;
 import com.yammer.metrics.stats.Snapshot;
+import org.apache.storm.metric.api.IMetric;
+import org.apache.storm.task.TopologyContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,7 +116,7 @@ public class YammerFacadeMetric implements IMetric {
   }
 
   /**
-   * Registers a facade metric with a given topology (represented by a {@link backtype.storm.task.TopologyContext}).
+   * Registers a facade metric with a given topology (represented by a {@link TopologyContext}).
    * with a {@link TopologyContext}.
    * <br/><br/>
 
